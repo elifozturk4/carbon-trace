@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST="{\"lib\\\\stellar.ts -> @stellar/freighter-api\":{\"id\":\"lib\\\\stellar.ts -> @stellar/freighter-api\",\"files\":[\"static/chunks/_app-pages-browser_node_modules_stellar_freighter-api_build_index_min_js.js\"]}}"
