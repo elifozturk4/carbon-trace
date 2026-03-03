@@ -12,10 +12,11 @@ Uygulama şu şekilde çalışır:
 
 1. Kullanıcı Stellar cüzdanını bağlar
 2. "İşe Bisikletle Gittim" veya "Geri Dönüşüm Yaptım" gibi butonlara basar
-3. Bu aktivite **Stellar blok zincirine** kaydedilir
-4. Kullanıcı **Yeşil Puan** kazanır ve istatistiklerini takip edebilir
+3. İsterse bir kanıt fotoğraf ekler
+4. Bu aktivite **Stellar blok zincirine** kaydedilir
+5. Kullanıcı **Yeşil Puan** kazanır ve istatistiklerini takip edebilir
 
-Bütün kayıtlar blok zincirinde tutulduğu için değiştirilemez, şeffaf ve doğrulanabilirdir — kimse "ben yaptım" diyip yapmış gibi gösteremez.
+Kayıtlar blok zincirinde tutulduğu için sonradan değiştirilemez. Kim ne zaman ne yaptı, herkes görebilir, kimse değiştiremez.
 
 ---
 
@@ -97,23 +98,6 @@ carbon-trace/
 
 ---
 
-## 🎨 Tasarım Sistemi
-
-Uygulama **"Doğa Blockchain ile Buluşuyor"** teması üzerine kuruludur.
-
-**Renk Paleti:**
-
-```
---forest:  #0a1a0f  → Ana arka plan (derin orman yeşili)
---canopy:  #0f2518  → Kart ve header arka planı
---lime:    #7fff47  → Ana aksan rengi (canlı yeşil)
---mist:    #c8e6c0  → Ana metin rengi
---fog:     #8fb898  → İkincil metin rengi
---sage:    #3a6b45  → Pasif/devre dışı öğeler
-```
-
----
-
 ## 🚀 Kurulum ve Çalıştırma
 
 ### Gereksinimler
@@ -133,18 +117,6 @@ npm run dev
 # 3. Tarayıcıda aç
 # http://localhost:3000
 ```
-
-### Diğer Komutlar
-
-```bash
-npm run build    # Production build oluşturur
-npm run start    # Production build'i çalıştırır
-npm run lint     # Kod kalitesi kontrolü
-```
-
-> **Not:** Eğer `.next` klasörü varsa ve hata alıyorsan önce `rm -rf .next node_modules` komutunu çalıştırıp `npm install` ile yeniden başla.
-
----
 
 ## 📋 Bileşenler Detaylı Açıklaması
 
@@ -174,6 +146,16 @@ Kullanıcının kişisel istatistiklerini gösterir:
 - Her aktivite türü için ayrı ayrı kaç kez yapıldığı ve kaç YP kazanıldığı
 
 Cüzdan bağlı değilken veriler `—` olarak gösterilir.
+
+### Fotoğraf Yükleme (İsteğe Bağlı)
+
+[Pinata](https://app.pinata.cloud) üzerinden ücretsiz hesap aç, API key al. Proje klasöründe `.env.local` dosyası oluştur:
+```env
+NEXT_PUBLIC_PINATA_API_KEY=senin_api_key
+NEXT_PUBLIC_PINATA_API_SECRET=senin_api_secret
+```
+
+Bu adımı atlarsan uygulama çalışır, sadece fotoğraf yükleme devre dışı kalır.
 
 ### `ActionLog.tsx` — Aktivite Geçmişi
 
@@ -231,52 +213,8 @@ Bu proje 4 aşamalı olarak planlanmıştır:
 
 ---
 
-## 🔧 Geliştirici Notları
-
-### Neden SSR'da `@stellar/stellar-sdk` import edilmiyor?
-
-`@stellar/stellar-sdk` kütüphanesi Node.js ortamına özgü modüller (`Buffer`, `crypto`, `fs`) kullandığı için Next.js'in sunucu tarafı render (SSR) aşamasında çalıştırıldığında hata verir. Bu yüzden:
-
-- `stellar.ts` dosyasında SDK import edilmez, ağ değerleri hardcoded yazılır
-- `next.config.mjs`'de webpack'e SDK'nın server bundle'dan dışarıda tutulması söylenir
-- Aşama 2'de SDK yalnızca `"use client"` direktifine sahip bileşenlerde `dynamic import` ile kullanılacak
-
-### Neden `src/` klasörü yok?
-
-Next.js hem `src/app/` hem de `app/` yapısını destekler ama Windows ortamında ikisi aynı anda tanındığında çakışma yaşanır. Proje düz `app/`, `components/`, `lib/` yapısını kullanır.
-
-### TypeScript Strict Mode
-
-`tsconfig.json`'da `"strict": true` aktiftir. Bu şu anlama gelir: `null` kontrolü, tip dönüşümü ve olası hatalar için en katı kurallar uygulanır. Daha güvenli kod yazılmasını sağlar.
-
----
-
-## 📁 Önemli Dosya Değişkenleri
-
-Aşama 2'ye geçerken değiştirilmesi gereken yerler:
-
-```typescript
-// lib/stellar.ts
-export const CONTRACT_ADDRESS = "PLACEHOLDER_CONTRACT_ADDRESS";
-// ↑ Deploy edilen Soroban kontrat adresi buraya gelecek
-
-export const ACTIVE_NETWORK = STELLAR_NETWORK.TESTNET;
-// ↑ Mainnet'e geçerken STELLAR_NETWORK.MAINNET yapılacak
-
-// components/WalletConnect.tsx
-const mockPublicKey = "GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGCEN5ASAIZUEQTFBN4G4YG";
-// ↑ Bu satır silinip window.freighter.getPublicKey() çağrısı gelecek
-```
-
----
-
 ## 📄 Lisans
 
 MIT — Özgürce kullanabilir, değiştirebilir ve dağıtabilirsin.
 
 ---
-
-<div align="center">
-  <p>🌿 Küçük adımlar, büyük fark yaratır.</p>
-  <p>Built with Next.js · Stellar · Soroban</p>
-</div>
