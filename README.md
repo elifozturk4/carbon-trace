@@ -147,7 +147,7 @@ Kullanıcının kişisel istatistiklerini gösterir:
 
 Cüzdan bağlı değilken veriler `—` olarak gösterilir.
 
-### Fotoğraf Yükleme (İsteğe Bağlı)
+### `Fotoğraf Yükleme` - (İsteğe Bağlı)
 
 [Pinata](https://app.pinata.cloud) üzerinden ücretsiz hesap aç, API key al. Proje klasöründe `.env.local` dosyası oluştur:
 ```env
