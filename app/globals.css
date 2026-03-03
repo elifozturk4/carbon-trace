@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --forest:   #0a1a0f;
+  --canopy:   #0f2518;
+  --moss:     #163320;
+  --lime:     #7fff47;
+  --lime-dim: #5dd630;
+  --sage:     #3a6b45;
+  --mist:     #c8e6c0;
+  --fog:      #8fb898;
+  --paper:    #f0f7ee;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--forest);
+  color: var(--mist);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Arka plan doku - ince organik noise */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(127,255,71,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(127,255,71,0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+::selection {
+  background: var(--lime);
+  color: var(--forest);
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--forest); }
+::-webkit-scrollbar-thumb { background: var(--sage); border-radius: 3px; }
+
+/* Kart bileşeni temel stili */
+.card {
+  background: var(--canopy);
+  border: 1px solid rgba(127,255,71,0.12);
+  border-radius: 16px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.card:hover { border-color: rgba(127,255,71,0.28); }
+
+/* Lime buton */
+.btn-lime {
+  background: var(--lime);
+  color: var(--forest);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-lime:hover  { background: var(--lime-dim); }
+.btn-lime:active { transform: scale(0.98); }
+.btn-lime:disabled {
+  background: var(--sage);
+  color: var(--fog);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Outline buton */
+.btn-outline {
+  background: transparent;
+  color: var(--lime);
+  border: 1px solid var(--lime);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-outline:hover { background: rgba(127,255,71,0.08); }
+
+/* Sayı animasyonu */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-count { animation: countUp 0.4s ease-out; }
+
+/* Fade-in stagger */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.5s ease-out both; }
+.fade-up-1 { animation-delay: 0.05s; }
+.fade-up-2 { animation-delay: 0.12s; }
+.fade-up-3 { animation-delay: 0.19s; }
+.fade-up-4 { animation-delay: 0.26s; }
+
+/* Pulse nokta - canlı göstergesi */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.8); }
+}
+.pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+/* Log satırı hover */
+.log-row {
+  border-bottom: 1px solid rgba(127,255,71,0.06);
+  transition: background 0.15s;
+}
+.log-row:hover { background: rgba(127,255,71,0.04); }
+
+/* Aktivite kartı büyük buton */
+.activity-card {
+  background: var(--canopy);
+  border: 1px solid rgba(127,255,71,0.15);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.activity-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(127,255,71,0.07) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.activity-card:hover {
+  border-color: rgba(127,255,71,0.4);
+  transform: translateY(-3px);
+}
+.activity-card:hover::before { opacity: 1; }
+.activity-card:disabled,
+.activity-card.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+.activity-card:disabled::before,
+.activity-card.disabled::before { opacity: 0; }
+
+/* Stat chip */
+.stat-chip {
+  background: rgba(127,255,71,0.08);
+  border: 1px solid rgba(127,255,71,0.15);
+  border-radius: 8px;
+  padding: 2px 10px;
+  font-size: 12px;
+  color: var(--lime);
+  font-family: 'DM Mono', monospace;
+}
